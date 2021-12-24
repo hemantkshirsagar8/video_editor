@@ -25,6 +25,7 @@ if st.sidebar.button("Video parts."):
         uploaded_file = st.file_uploader("Upload video a file.")
         parts = st.number_input('Number of parts.', min_value=1, max_value=10, step=1)
         if uploaded_file is not None:
+            st.write("28")
             bytes_data = uploaded_file.getvalue()
             st.write(bytes_data)
             filename = uploaded_file.name
