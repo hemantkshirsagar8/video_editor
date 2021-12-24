@@ -24,9 +24,8 @@ st.write("Here, you can cut the video into multiple parts in sequence.")
 with st.form('Video Parts'):
     st.markdown('### Video Parts')
     uploaded_file = st.file_uploader("Upload video a file.")
-
     parts = st.number_input('Number of parts.', min_value=1, max_value=10, step=1)
-    st.write(parts)
+    parts = parts + 1
     if uploaded_file is not None:
         bytes_data = uploaded_file.getvalue()
         if not os.path.isdir(os.path.join(os.getcwd() + "/upload/")):
@@ -40,6 +39,4 @@ with st.form('Video Parts'):
             video_parts("upload/video_file.mp4", parts)
         else:
             st.warning("Please enter the number of parts.")
-    else:
-        st.warning("File not uploaded.")
 
