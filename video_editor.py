@@ -49,7 +49,7 @@ class VideoEditor:
             bytes = f.read()
             b64 = base64.b64encode(bytes).decode()
             href = f"<a href=\"data:file/zip;base64,{b64}\" download='{ZipfileDotZip}.zip'>\
-                        Download all parts\
+                        Download\
                     </a>"
         shutil.rmtree(os.path.join(self.base_path, self.unique_id))
         self.del_unwwanted_files(".mp4")
