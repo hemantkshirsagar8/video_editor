@@ -12,6 +12,14 @@ st.write("Author: Hemant Kshirsagar")
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
+def video_join(videos, unique_id, base_path):
+    video_editor = VideoEditor()
+    video_editor.video = videos
+    video_editor.unique_id = unique_id
+    video_editor.base_path = base_path
+    video_editor.video_cutter()
+
+
 def video_parts(video, parts, unique_id, base_path):
     video_editor = VideoEditor()
     video_editor.video = video
@@ -30,35 +38,30 @@ def add_audio_in_video(video, audio, unique_id, base_path):
     video_editor.add_audio_to_video()
 
 
-col1, col2 = st.columns(2)
+# with st.expander("Join Videos"):
+#     with st.form('Join Videos'):
+#         st.markdown('### Join Videos')
+#         st.write("Here, you can join the multiple videos into single video in sequence.")
+#         uploaded_file = st.file_uploader("Upload video a files.", type="mp4")
+#         cutter_btn = st.form_submit_button('Join')
+#
+#         if cutter_btn and uploaded_file is not None:
+#             bytes_data = uploaded_file.getvalue()
+#             unique_id = uuid.uuid4().hex
+#             if not os.path.isdir(os.path.join(os.getcwd(), "temp")):
+#                 os.mkdir(os.path.join(os.getcwd(), "temp"))
+#             os.mkdir(os.path.join(os.getcwd(), "temp", unique_id))
+#             os.mkdir(os.path.join(os.getcwd(), "temp", unique_id, "upload"))
+#             os.mkdir(os.path.join(os.getcwd(), "temp", unique_id, "download"))
+#             base_path = os.path.join(os.getcwd(), "temp")
+#             with open(os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4", "wb") as video_file:
+#                 video_file.write(bytes_data)
+#             input_video_files_path = os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4"
+#             video_join(input_video_files_path, unique_id, base_path)
 
-with col1:
-    with st.form('Video Parts'):
-        st.markdown('### Video Parts')
-        st.write("Here, you can cut the video into multiple parts in sequence.")
-        uploaded_file = st.file_uploader("Upload video a file.", type="mp4")
-        parts = st.number_input('Number of parts.', min_value=1, max_value=10, step=1)
-        parts = parts + 1
-        cutter_btn = st.form_submit_button('Start making parts')
-        if cutter_btn and parts is not None:
-            if uploaded_file is not None:
-                bytes_data = uploaded_file.getvalue()
-                unique_id = uuid.uuid4().hex
-                if not os.path.isdir(os.path.join(os.getcwd(), "temp")):
-                    os.mkdir(os.path.join(os.getcwd(), "temp"))
-                os.mkdir(os.path.join(os.getcwd(), "temp", unique_id))
-                os.mkdir(os.path.join(os.getcwd(), "temp", unique_id, "upload"))
-                os.mkdir(os.path.join(os.getcwd(), "temp", unique_id, "download"))
-                base_path = os.path.join(os.getcwd(), "temp")
-                with open(os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4", "wb") as video_file:
-                    video_file.write(bytes_data)
-                input_video_file_path = os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4"
-
-            video_parts(input_video_file_path, parts, unique_id, base_path)
-
-with col2:
-    with st.form('Add Audio in Video'):
-        st.markdown('### Add Audio in Video')
+with st.expander("Audio in Video"):
+    with st.form('Audio in Video'):
+        st.markdown('### Audio in Video')
         st.write("Here, you can add any mp3 audio into video file.")
         uploaded_video_file = st.file_uploader("Upload video a file.", type="mp4")
         uploaded_audio_file = st.file_uploader("Upload audio a file.", type="mp3")
@@ -81,5 +84,29 @@ with col2:
                     audio_file.write(audio_bytes_data)
                 video_file_path = os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4"
                 audio_file_path = os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_audio.mp3"
+                add_audio_in_video(video_file_path, audio_file_path, unique_id, base_path)
 
-            add_audio_in_video(video_file_path, audio_file_path, unique_id, base_path)
+
+with st.expander("Make Video Parts"):
+    with st.form('Video Parts'):
+        st.markdown('### Video Parts')
+        st.write("Here, you can cut the video into multiple parts in sequence.")
+        uploaded_file = st.file_uploader("Upload video a file.", type="mp4")
+        parts = st.number_input('Number of parts.', min_value=1, max_value=10, step=1)
+        parts = parts + 1
+        cutter_btn = st.form_submit_button('Start making parts')
+        if cutter_btn and parts is not None:
+            if uploaded_file is not None:
+                bytes_data = uploaded_file.getvalue()
+                unique_id = uuid.uuid4().hex
+                if not os.path.isdir(os.path.join(os.getcwd(), "temp")):
+                    os.mkdir(os.path.join(os.getcwd(), "temp"))
+                os.mkdir(os.path.join(os.getcwd(), "temp", unique_id))
+                os.mkdir(os.path.join(os.getcwd(), "temp", unique_id, "upload"))
+                os.mkdir(os.path.join(os.getcwd(), "temp", unique_id, "download"))
+                base_path = os.path.join(os.getcwd(), "temp")
+                with open(os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4", "wb") as video_file:
+                    video_file.write(bytes_data)
+                input_video_file_path = os.path.join(os.getcwd(), "temp", unique_id, "upload") + "/input_video.mp4"
+                video_parts(input_video_file_path, parts, unique_id, base_path)
+
